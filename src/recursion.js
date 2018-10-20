@@ -6,31 +6,139 @@
 // denoted by n!, is the product of all positive integers less than or equal to n.
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
+
+/*
+factorial(5)
+
+iteration      n         return        
+0              5          5 * factorial(5-1)
+1              4          5 * 4 * factorial(4-1)
+2              3          5 * 4 * 3 * factorial(3-1)  
+3              2          5 * 4 * 3 * 2 * factorial(2-1)
+4              1          5 * 4 * 3 * 2 * 1 * factorial(1-1)
+5              0          5 * 4 * 3 * 2 * 1 * 1 => 120
+*/
+
 var factorial = function(n) {
+	if (n < 0) {
+		return null;
+	}
+	if (n === 0) { //base case
+		return 1;
+	} else { //recursive case
+	 	return n * factorial(n-1);
+	}
 };
+
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
+/*
+input: array
+output: num (sum)
+process: recursive function adds to the previous element
+
+base case: recursion ends at the last element of the array
+recursive: every element of the array and add it to the previous
+
+Transformation Steps:
+iteration     	      array       						return 
+0             	[1, 2, 3, 4, 5, 6]            1 + sum([2, 3, 4, 5, 6])
+1             	[2, 3, 4, 5, 6]               1 + 2 + sum([3, 4, 5, 6])             	
+2             	[3, 4, 5, 6]                  1 + 2 + 3 + sum([4, 5, 6])             
+3             	[4, 5, 6]                     1 + 2 + 3 + 4 + sum([5, 6])             		
+4             	[5, 6]                        1 + 2 + 3 + 4 + 5 + sum([6])             		 
+5             	[6]                           1 + 2 + 3 + 4 + 5 + 6 + sum([])
+6             	[]                            1 + 2 + 3 + 4 + 5 + 6 + 0 => 21             		
+*/
+
 var sum = function(array) {
+  if (array.length === 0) {
+  	return 0;
+  } else {
+  return array[0] + sum(array.slice(1));	
+  }
 };
+
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
+/*
+input: nested array
+output: the sum of the values
+process: flatten the array, then proceed with recursion similar to above.
+*/
+
 var arraySum = function(array) {
+  var flattenedArr = array.flat(Infinity);
+  if (flattenedArr.length === 0) {
+  	return 0;
+  } else {
+  return flattenedArr[0] + arraySum(flattenedArr.slice(1));	
+  }
 };
 
 // 4. Check if a number is even.
+// isEven(8); => true   isEven(1); => false
+/*
+Input: number
+Output: boolean
+Process: Base case 
+
+Transformation Steps:
+
+n=9
+expected result = false
+9 % 2 === 1
+
+iteration      number     n-2
+0               9          7
+1               7          5
+2               5          3
+3               3          1
+
+n=-6
+expected result = true
+iteration      number      negative? if yes -1 * n     
+                               if no, n-2   
+0               -6            yes, -6 -> 6           
+1               6             no, 6-2 -> 4  
+2               4             no, 4-2 -> 2                                      
+3               2             no, 2-2 -> 0                                      
+
+*/
 var isEven = function(n) {
+	if (n === 0) {
+		return true;
+	} else if (n === 1){
+		return false;
+	} else if (n < 0) {
+		return isEven(-1 * n);  //or isEven(n+2);	
+	} else {
+		return isEven(n-2); 
+	}
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
+/*
+Input:
+Output:
+
+Transformation Steps:
+*/
 var sumBelow = function(n) {
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
+/*
+Input:
+Output:
+
+Transformation Steps:
+*/
 var range = function(x, y) {
 };
 
@@ -39,6 +147,9 @@ var range = function(x, y) {
 // 8^2 = 8 x 8 = 64. Here, 8 is the base and 2 is the exponent.
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
+/*
+
+*/
 var exponent = function(base, exp) {
 };
 
@@ -46,14 +157,23 @@ var exponent = function(base, exp) {
 // powerOfTwo(1); // true
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
+/*
+
+*/
 var powerOfTwo = function(n) {
 };
 
 // 9. Write a function that reverses a string.
+/*
+
+*/
 var reverse = function(string) {
 };
 
 // 10. Write a function that determines if a string is a palindrome.
+/*
+
+*/
 var palindrome = function(string) {
 };
 
@@ -62,6 +182,9 @@ var palindrome = function(string) {
 // modulo(5,2) // 1
 // modulo(17,5) // 2
 // modulo(22,6) // 4
+/*
+
+*/
 var modulo = function(x, y) {
 };
 
