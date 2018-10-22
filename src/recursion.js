@@ -120,26 +120,66 @@ var isEven = function(n) {
 };
 
 // 5. Sum all integers below a given integer.
-// sumBelow(10); // 45
+// sumBelow(10); // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45
 // sumBelow(7); // 21
+
 /*
-Input:
-Output:
+Input: number
+Output: sum of all numbers before
+Process: Iterate through all the numbers under and get the sum
 
 Transformation Steps:
+sumBelow(10)
+iteration   		n			return
+	0		 	 	10       9 + sumBelow(9)
+	1		 		9        9 + 8 + sumBelow(8)
+	2			 	8        9 + 8 + 7 + sumBelow(7)
+	3				7        9 + 8 + 7 + 6 + sumBelow(6)
+	4				6        9 + 8 + 7 + 6 + 5 + sumBelow(5)
+	5			 	5        9 + 8 + 7 + 6 + 5 + 4 + sumBelow(4)
+	6				4        9 + 8 + 7 + 6 + 5 + 4 + 3 + sumBelow(3)
+	7				3        9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + sumBelow(2)
+	8				2        9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + sumBelow(1)
+	9				1        9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + 0 + sumBelow(0)
+	10		  		0        9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + 0 + 0 = 45
 */
 var sumBelow = function(n) {
+	if (n === 0) {
+		return 0;
+	} else if (n > 0) {
+		return (n - 1) + sumBelow(n - 1);
+	} else if (n < 0) {
+		return (n + 1) + sumBelow(n + 1);
+	}
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 /*
-Input:
-Output:
+Input: 2 numbers
+Output: array of numbers between x and y
 
 Transformation Steps:
+range(2, 9)
+iteration		x		y		return
+0				2		9		range(2, 9-1).concat(9-1)	
+1				2		8		range(2, 8-1).concat(8-1).concat(9-1)
+2				2		7		range(2, 7-1).concat(7-1).concat(8-1).concat(9-1)
+3				2		6		range(2, 6-1).concat(6-1).concat(7-1).concat(8-1).concat(9-1)
+4				2		5		range(2, 5-1).concat(5-1).concat(6-1).concat(7-1).concat(8-1).concat(9-1)
+5				2		4		range(2, 4-1).concat(4-1).concat(5-1).concat(6-1).concat(7-1).concat(8-1).concat(9-1)
+6				2		3		[].concat(4-1).concat(5-1).concat(6-1).concat(7-1).concat(8-1).concat(9-1) => [3, 4, 5, 6, 7, 8]
+
+
 */
 var range = function(x, y) {
+	if (x === y || x === y - 1 || x === y + 1) {
+  	return [];
+	} else if (x > y) {
+		return range(x, y+1).concat(y+1); 
+	} else {
+		return range(x, y-1).concat(y-1);
+	}
 };
 
 // 7. Compute the exponent of a number.
@@ -151,6 +191,13 @@ var range = function(x, y) {
 
 */
 var exponent = function(base, exp) {
+	if (exp === 0) {
+		return 1;
+	} else if(exp < 0) {
+		return 1 / exponent(base, -exp)
+	} else {
+		return base * exponent(base, exp - 1)
+	}
 };
 
 // 8. Determine if a number is a power of two.
@@ -158,23 +205,61 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 /*
+input: a number
+output: boolean
 
+strategy: A power of 2 is a number that is equivalent to 2^x. 
 */
 var powerOfTwo = function(n) {
+	if (n < 1) {
+		return false;
+	} else if (n === 1) {
+		return true;
+	} else {
+		return powerOfTwo(n / 2);
+	}
 };
 
 // 9. Write a function that reverses a string.
 /*
+input: string
+output: reversed string
+strategy: plucking from the string, substr() deletes from the front, charAt() will pluck
+		charAt(x): returns a new string of the string value at the given index
+		substr(x, y): returns the part of the string between the starting index and the number of characters behind it. If the second parameter is undefined, it will return all characters behind the starting index. 
+
+// reverse(water) = ? => '' + 'r' +'e' + 't' + 'a' + 'w'
+// reverse(water) = reverse(ater) + 'w' => '' + 'r' +'e' + 't' + 'a' + 'w'
+// reverse(ater) = reverse(ter) + 'a' => '' + 'r' +'e' + 't' + 'a'
+// reverse(ter) = reverse(er) + 't' => '' + 'r' +'e' + 't'
+// reverse(er) = reverse(r) + 'e' => '' + 'r' +'e'
+// reverse(r) = reverse() + 'r' => '' + 'r'
+// reverse() [string.length=0] = ''
 
 */
 var reverse = function(string) {
+	if (string.length === 0){
+		return '';
+	} else {
+		return reverse(string.slice(1)) + string.charAt(0);
+	}
 };
 
 // 10. Write a function that determines if a string is a palindrome.
 /*
-
+input: string
+output: boolean
 */
+// 'hi he llo'.split(' '') => ['hi', 'he', 'llo'].join('') => 'hihello'
 var palindrome = function(string) {
+  var str = string.split(' ').join('').toLowerCase()
+
+	if (str.length === 0 || str.length === 1){
+		return true;
+	} else if (str[0] === str[str.length-1]) {
+		return palindrome(str.slice(1, str.length-1));
+	} 
+		return false;
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -183,9 +268,36 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 /*
+Transformation
+modulo(17, 5)
+iteration		x		y 		new (x, y)								remainder
+0				17		5		modulo(17-5, 5) -> modulo(12,5) 
+1				12		5		modulo(12-5, 5) -> modulo(7,5)
+2				7		5		modulo(7-5, 5) -> modulo(2,5)
+3				2		5		x is less than y, so remainder is x			(2)
 
+modulo(-16, 3)
+iteration		x		y 		new (x, y)								remainder
+0				-16		3		-modulo(--16, 3) -> -modulo(16, 3)
+1				16		3		-modulo(16-3, 3) -> -modulo(13, 3)
+2				13		3		-modulo(13-3, 3) -> -modulo(10, 3)...
+3				10		3
+4				7		3	
+5				4		3		-modulo(4-3, 3) -> -modulo(1, 3)
+6				1		3		x is less than y, so remainder is x			-(1)
 */
 var modulo = function(x, y) {
+	if (x === 0 && y === 0) {
+		return NaN;
+	} else if (x < 0) {
+		return -modulo(-x, y); 
+	} else if (y < 0) {
+		return modulo(x, -y);
+	} else if (x < y) {
+		return x;
+	} else {
+		return modulo(x - y, y);
+	}
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
