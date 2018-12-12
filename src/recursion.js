@@ -6,31 +6,203 @@
 // denoted by n!, is the product of all positive integers less than or equal to n.
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
+
+/*
+Input: Number (n)
+Return: n * factorial(n-1)   <-- Recursive Function
+Output: Number
+
+Base Case: n === 0, return 1  // factorial(0) === 1
+
+Transformation Steps:
+iter | n | n === 0?| n - 1|  Recursion: n * factorial(n-1)
+  1  | 5 |    N    |   4  |  5 * factorial(4)                 
+  2  | 4 |    N    |   3  |  5 * 4 * factorial(3)             
+  3  | 3 |    N    |   2  |  5 * 4 * 3 * factorial(2)          
+  4  | 2 |    N    |   1  |  5 * 4 * 3 * 2 * factorial1)       
+  5  | 1 |    N    |   0  |  5 * 4 * 3 * 2 * 1 * factorial(0)  
+  6  | 0 |    Y    |  --- |  5 * 4 * 3 * 2 * 1 * 1 = 120    
+
+Execution Stack:
+5 * factorial(4)
+5 * (4 * factorial(3))
+5 * (4 * (3 * factorial(2))) 
+5 * (4 * (3 * (2 * factorial(1) 
+5 * (4 * (3 * (2 * (1 * factorial(0))))  <-- factorial(0) = 1
+5 * (4 * (3 * (2 * (1 * 1))))
+5 * (4 * (3 * (2 * 1)))
+5 * (4 * (3 * 2))
+5 * (4 * 6)
+5 * 24
+120
+
+Pseudocode:
 var factorial = function(n) {
+//if n is negative
+  //return null
+//if n === 0
+  //return 1
+//else
+  //return n * factorial(n-1)
+}
+*/
+
+var factorial = function(n) {
+  if (n < 0) {    //if n is negative, returns null
+    return null;
+  }   
+  if (n === 0) {  //base case: when factorial(0) = 1
+    return 1;
+  } else {
+    return n * factorial(n - 1);  //recursion
+  }
 };
+
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
+/*
+
+Input: Array
+Output: Number
+Base Case: 1
+
+iter |arr[i]| length   Array
+  1  |   1  |   6    [1,2,3,4,5,6]
+  2  |   2  |   5     1 + [2,3,4,5,6]
+  3  |   3  |   4     1 + 2 + [3,4,5,6]
+  4  |   4  |   3     1 + 2 + 3 + [4,5,6]
+  5  |   5  |   2     1 + 2 + 3 + 4 + [5,6]
+  6  |   6  |   1     1 + 2 + 3 + 4 + 5 + [6]
+     |      |   0     1 + 2 + 3 + 4 + 5 + 6 = 21
+
 var sum = function(array) {
+  //if array.length === 1
+    //return array[0]
+  //else
+    return array[0] + sum(array.slice(1))
+}
+
+*/
+
+var sum = function(array) {
+  if (array.length === 0) {
+    return 0;
+  } else if (array.length === 1) {  //base case
+    return array[0] 
+  } else {
+    return array[0] + sum(array.slice(1));
+  }  
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
+/*
+Input: Nested Array
+Output: Number (sum)
+
+Notes:
+repeating: adding numbers in array
+
+[1,[2,3],[[4]],5]
+1 + [[2,3],[[4]],5]
+1 + 5 + [[4], 5]
+1 + 5 + 4 + [5]
+1 + 5 + 4 + 5 = 15
+
+if element is an array, flatten?
+
+Base Case: array.length === 0, return 0
+
+*/
 var arraySum = function(array) {
-};
+  // var sum = 0
+  //if the array's length === 0
+    //return 0
+  
+  //for loop thorugh array
+    //if element is an array
+      //return arraySum(array[i])
+    //sum += array[i]
+
+  var sum = 0;
+   
+  if(array.length === 0) {
+    return 0; 
+  }
+  for(var i = 0; i < array.length; i++) {
+    if(Array.isArray(array[i])) {
+      sum += arraySum(array[i])
+    } else {
+      sum += array[i]
+    } 
+  }
+  return sum
+}
+
+
 
 // 4. Check if a number is even.
+/*
+Input: Number (n)
+Output: Boolean
+Base Case: if (n === 0) return true / if (n === 1) return false
+Recursion: isEven(n - 2)
+
+*/
 var isEven = function(n) {
+  if(n === 0) {
+    return true;
+  } else if (n === 1) {
+    return false;
+  } else if (n < 0) {
+    return isEven(n + 2);
+  } else {
+    return isEven(n - 2);
+ }
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
+/*
+Input: Number
+Output: Number (sum)
+Base Case: n === 0, return 0
+Recursion: n + sumBelow(n - 1)
+
+10 + sumBelow(10 - 1)
+10 + 9 + sumBelow( 9- 1)
+10 + 9 + + 8 + sumBelow(8 - 1)
+10 + 9 + + 8 + 7 + sumBelow(7 - 1)
+10 + 9 + + 8 + 7 + 6 + sumBelow(6 - 1)
+ ....
+10 + 9 + + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + sumBelow(1 - 1)
+
+*/
+
 var sumBelow = function(n) {
+  if (n === 0) {
+    return 0;
+  } else if (n < 0) {
+    return n + sumBelow(n + 1);
+  } else {
+    return n + sumBelow(n - 1);
+  }
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
+/*
+Input: numbers (x, y)
+Output: array [x, ...., y]
+Base Case: 
+Recursion:
+- What am I doing over again?
+- What is linear? (beginning/ending)
+
+*/
+
 var range = function(x, y) {
 };
 
@@ -39,6 +211,14 @@ var range = function(x, y) {
 // 8^2 = 8 x 8 = 64. Here, 8 is the base and 2 is the exponent.
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
+/*
+Input:
+Output:
+Base Case:
+Recursion:
+
+*/
+
 var exponent = function(base, exp) {
 };
 
@@ -46,14 +226,54 @@ var exponent = function(base, exp) {
 // powerOfTwo(1); // true
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
+/*
+Input:
+Output:
+Base Case:
+Recursion:
+
+*/
+
 var powerOfTwo = function(n) {
 };
 
+
+
+
 // 9. Write a function that reverses a string.
+/*
+Input: String
+Output: String, reversed
+Base Case: string.length === 0
+Recursion: str += string reverse(string.slice(-1))
+
+'string'      
+'strin' + 'g'
+'stri' + 'gn'
+'str' + 'gni'
+'st' + 'gnir'
+'s' + 'gnirt'
+'gnirts'
+*/
+
 var reverse = function(string) {
+  var str = '';
+  if(string.length === 0){
+    return str 
+  }
+  return str += reverse(string.slice(-1))
 };
 
+
 // 10. Write a function that determines if a string is a palindrome.
+/*
+Input: 
+Output:
+Base Case: 
+Recursion: 
+
+*/
+
 var palindrome = function(string) {
 };
 
