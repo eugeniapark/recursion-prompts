@@ -46,7 +46,6 @@ var factorial = function(n) {
   //return n * factorial(n-1)
 }
 */
-
 var factorial = function(n) {
   if (n < 0) {    //if n is negative, returns null
     return null;
@@ -82,7 +81,6 @@ var sum = function(array) {
   //else
     return array[0] + sum(array.slice(1))
 }
-
 */
 
 var sum = function(array) {
@@ -91,9 +89,10 @@ var sum = function(array) {
   } else if (array.length === 1) {  //base case
     return array[0] 
   } else {
-    return array[0] + sum(array.slice(1));
+    return array[0] + sum(array.slice(1));  //recursive case
   }  
 };
+
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
@@ -113,7 +112,6 @@ repeating: adding numbers in array
 if element is an array, flatten?
 
 Base Case: array.length === 0, return 0
-
 */
 var arraySum = function(array) {
   // var sum = 0
@@ -127,19 +125,18 @@ var arraySum = function(array) {
 
   var sum = 0;
    
-  if(array.length === 0) {
+  if(array.length === 0) {  //base case
     return 0; 
   }
   for(var i = 0; i < array.length; i++) {
     if(Array.isArray(array[i])) {
-      sum += arraySum(array[i])
+      sum += arraySum(array[i]);  //recursive case
     } else {
-      sum += array[i]
+      sum += array[i];
     } 
   }
   return sum
 }
-
 
 
 // 4. Check if a number is even.
@@ -148,19 +145,19 @@ Input: Number (n)
 Output: Boolean
 Base Case: if (n === 0) return true / if (n === 1) return false
 Recursion: isEven(n - 2)
-
 */
 var isEven = function(n) {
-  if(n === 0) {
+  if(n === 0) {          //base case
     return true;
-  } else if (n === 1) {
+  } else if (n === 1) {  //base case
     return false;
-  } else if (n < 0) {
-    return isEven(n + 2);
+  } else if (n < 0) {    //base case
+    return isEven(n + 2);  //recursive case (-num)
   } else {
-    return isEven(n - 2);
+    return isEven(n - 2);  //recursive case
  }
 };
+
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
@@ -169,42 +166,106 @@ var isEven = function(n) {
 Input: Number
 Output: Number (sum)
 Base Case: n === 0, return 0
+Base Case: if statement for negative numbers
 Recursion: n + sumBelow(n - 1)
 
-10 + sumBelow(10 - 1)
-10 + 9 + sumBelow( 9- 1)
-10 + 9 + + 8 + sumBelow(8 - 1)
-10 + 9 + + 8 + 7 + sumBelow(7 - 1)
-10 + 9 + + 8 + 7 + 6 + sumBelow(6 - 1)
- ....
-10 + 9 + + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + sumBelow(1 - 1)
-
+sumBelow(10)
+9 + sumBelow(9 - 1))
+9 + (8 + sumBelow(8 - 1)))
+9 + (8 + (7 + sumBelow(7 - 1))))
+9 + (8 + (7 + (6 + sumBelow(6 - 1)))))
+9 + (8 + (7 + (6 + (5 + sumBelow(5 - 1))))))
+9 + (8 + (7 + (6 + (5 + (4 + sumBelow(4 - 1)))))))
+9 + (8 + (7 + (6 + (5 + (4 + (3 + sumBelow(3 - 1))))))))
+9 + (8 + (7 + (6 + (5 + (4 + (3 + (2 + sumBelow(2 - 1)))))))))
+9 + (8 + (7 + (6 + (5 + (4 + (3 + (2 + (1 + sumBelow(1 - 1))))))))))  <-- sumBelow(0) === 0
+9 + (8 + (7 + (6 + (5 + (4 + (3 + (2 + (1 + sumBelow(0)))))))))
+9 + (8 + (7 + (6 + (5 + (4 + (3 + (2 + (1 + 0))))))))
+9 + (8 + (7 + (6 + (5 + (4 + (3 + (2 + 1)))))))
+9 + (8 + (7 + (6 + (5 + (4 + (3 + 3))))))
+9 + (8 + (7 + (6 + (5 + (4 + 6)))))
+9 + (8 + (7 + (6 + (5 + 10))))
+9 + (8 + (7 + (6 + 15))) 
+9 + (8 + (7 + 21)) 
+9 + (8 + 28)
+9 + 36
+45 
 */
-
 var sumBelow = function(n) {
-  if (n === 0) {
+  var numBelow = n - 1  //starts at number below n
+
+  if (n === 0) {  //base case
     return 0;
-  } else if (n < 0) {
-    return n + sumBelow(n + 1);
+  } else if (n < 0) {  //base case (-num)
+    numBelow = n + 1;
+    return numBelow + sumBelow(n + 1);  //recursive case (-num)
   } else {
-    return n + sumBelow(n - 1);
+    return numBelow + sumBelow(n - 1);  //return (n - 1) + sumBelow(n - 1) 
   }
 };
 
+
 // 6. Get the integers within a range (x, y).
-// range(2,9); // [3,4,5,6,7,8]
 /*
 Input: numbers (x, y)
-Output: array [x, ...., y]
-Base Case: 
-Recursion:
+Output: array (of numbers [x, ...., y])
+Base Case: x === y, return []
+Recursion: x + range(x + 1, y)
 - What am I doing over again?
 - What is linear? (beginning/ending)
 
+range(2,9); // [3,4,5,6,7,8]
+
+base case: if (x === y - 1), return [y - 1]
+recursive case: return (x + 1).concat(range(x + 1, y))
+
+Tranformation Steps:
+[x + 1].concat(range(x + 1, y))
+[3].concat([3 + 1].concat([4 + 1].concat([4 + 1].concat([5 + 1]).concat([6 + 1].concat(range(7 + 1, 9))))))) <-- base case: 8 === (9 - 1), return y - 1
+[3].concat([3 + 1].concat([4 + 1].concat([4 + 1].concat([5 + 1]).concat([6 + 1].concat([8]))))))) <-- collapse
+return [3, 4, 5, 6, 7, 8]
+
+//range(x, y)
+  //if x === y - 1
+    //return [y - 1]
+  //else 
+    //return (x + 1).concat(range(x + 1, y))
 */
 
 var range = function(x, y) {
-};
+  if (x === y || x === y + 1 || x === y - 1) {  //base case: if x and y are 1 number apart (no range)
+    return [];
+  } else if (x > y) {  //base case: from test
+    return [x - 1].concat(range(x - 1, y))
+  }
+  if (x + 1 === y) {  //base case: when recursion reaches, return value [y] and begin collapse
+    return [x];
+  } else {
+    return [x + 1].concat(range(x + 1, y))
+  }
+}
+
+/*
+function range(x,y) {
+    var rangeArray= [];
+    if (x < y - 1) {
+      if(x === y - 1){
+        return [];
+      }
+      rangeArray.push(x + 1);  //push val
+      return rangeArray.concat(range(x + 1, y));  //concat recursion
+    } else if (x > y + 1) {
+      if(x === y + 1){
+        return rangeArray;
+      }
+      rangeArray.push(x - 1);
+      return rangeArray.concat(range(x - 1, y));
+    } else {
+      return rangeArray;
+    }
+}
+*/
+
 
 // 7. Compute the exponent of a number.
 // The exponent of a number says how many times the base number is used as a factor.
@@ -212,14 +273,32 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 /*
-Input:
-Output:
-Base Case:
+Input: Numbers (base, exp)
+Output: Number
+Base Case: exp === 0, return 1
+Base Case: negative numbers
 Recursion:
 
-*/
+//if exp === 0
+  //return 1
+//else (recurse) 
+  // return base * exponent(base, exp - 1)
 
+exponent(4, -2)
+base * exponent(base, exp - 1)
+4 * exponent(4, )
+
+x^n = 1 / (x^ −n)
+(1 / base * exponent(base, -exp - 1))  
+*/   
 var exponent = function(base, exp) {
+  if (exp === 0) {  // base case
+    return 1;
+  } else if (exp < 0) {  // if negative number
+    return 1 / (base * exponent(base, -exp - 1))
+  } else {
+    return base * exponent(base, exp - 1)  // recursive case
+  }
 };
 
 // 8. Determine if a number is a power of two.
@@ -227,17 +306,31 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 /*
-Input:
-Output:
-Base Case:
-Recursion:
+Input: number
+Output: boolean
+Base Case: n === 1  (2 / 2 = 1)
+Base Case: n < 1  (if not powerOfTwo)
+Recursion: n / 2
 
+powerOfTwo(16) > powerOfTwo(16/2) > powerOfTwo(4/2) > powerOfTwo(2/2) > powerOfTwo(1) > true
+powerOfTwo(10) > powerOfTwo(10/2) > powerOfTwo(5/2) > powerOfTwo(2.5/2) > powerOfTwo(1.25/2) > powerOfTwo(.625) => false
+
+//if n === 0  //base case: is power of 2
+  //return true
+//if n < 0  //base case: not power of 2
+  //return false
+// else
+  //return powerOfTwo(n / 2)
 */
-
 var powerOfTwo = function(n) {
-};
-
-
+  if (n === 1) {  //if powerOfTwo
+    return true;
+  } else if (n < 1) {  //not powerOfTwo
+    return false;
+  } else {
+    return powerOfTwo(n / 2);
+  }
+}
 
 
 // 9. Write a function that reverses a string.
@@ -247,35 +340,64 @@ Output: String, reversed
 Base Case: string.length === 0
 Recursion: str += string reverse(string.slice(-1))
 
-'string'      
-'strin' + 'g'
-'stri' + 'gn'
-'str' + 'gni'
-'st' + 'gnir'
-'s' + 'gnirt'
-'gnirts'
+reverse('string')
+(reverse('tring') + 's'
+((reverse('ring') + 't') + 's'
+(((reverse('ing') + 'r') + 't') + 's'
+((((reverse('ng') + 'i') + 'r') + 't') + 's'
+(((((reverse('g') + 'n') + 'i') + 'r') + 't') + 's'  <- string = g, return 'g'
 */
-
 var reverse = function(string) {
-  var str = '';
-  if(string.length === 0){
-    return str 
+  if (string.length === 1) {
+    return string[string.length - 1];
+  } else {
+    return reverse(string.slice(1)) + string[0]; 
   }
-  return str += reverse(string.slice(-1))
 };
 
 
 // 10. Write a function that determines if a string is a palindrome.
 /*
-Input: 
-Output:
+Input: String
+Output: Boolean
 Base Case: 
 Recursion: 
 
-*/
+palindrome('noon') > ('n' + palindrome('oo')) + ('n' -> -> 'n' + palindrome('oo')) + 'n'
+palindrome('moon') -> 'm' === 'n'
+r aceca r
 
+//if string.length <= 1
+  //return true;
+//else
+ if string[0] === string[string.length - 1]
+   return palindrome(string.slice(1, string.length - 1))
+*/
 var palindrome = function(string) {
+  string = string.toLowerCase();
+
+  if (string.length <= 1) {
+    return true;
+  } else if (string[0] !== string[string.length - 1]) {
+    return false;
+  }
+  return palindrome(string.slice(1, -1)); //(string - 1) => -1 
 };
+
+
+/*
+var palindrome = function(string) {
+  string = string.toLowerCase();
+
+  if (string.length <= 1) {
+    return true;
+  } else if (string[0] === string[string.length - 1]) {
+    return palindrome(string.slice(1, string.length - 1));
+  } else {
+    return false;
+  }
+};
+*/
 
 // 11. Write a function that returns the remainder of x divided by y without using the
 // modulo (%) operator.
@@ -283,11 +405,26 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+  if (x === 0 && y === 0) {  //if x = 0 and y = 0, return NaN
+    return NaN;
+  } else if (x < 0 ) {  //if x is negative, returns negative modulo
+    return -modulo(-x, y);  
+  } else if (y < 0) {  //if y is negative, returns positive modulo
+    return modulo(x, -y)
+  } else if (x < y) {  //base case: when x < y, modulo === x
+    return x;
+  } else {
+    return modulo(x - y, y)  //recursion case
+  }
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
-var multiply = function(x, y) {
+var multiply = function(x, y) {  //(2, 5)
+  if (y === 0) {
+    return x;
+  } 
+  return x + multiply(x, y - 1)  // 2 + (2 + multiply(2, 2 - 1)
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
